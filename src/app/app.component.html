@@ -1,0 +1,121 @@
+<h2>Localização de Amigos </h2>
+
+
+<div class="col-sm-12">
+  <div class="row">
+
+
+    <div class="col-sm-4">
+      <label class="label text-muted">Amigos</label>
+      <ng-select [items]="$friends | async" [multiple]="false" bindLabel="name" bindValue="id" id="id"
+        notFoundText="Nenhum resultado encontrado" placeholder="Selecione" (change)="changeFriend($event)">
+
+      </ng-select>
+
+    </div>
+  </div>
+
+
+
+  <div class="row">
+    <p *ngIf="friendList==null; else elseBlock"></p>
+    <ng-template #elseBlock>
+      <div class="col col-sm-6">
+        <br>
+
+
+        <label class="label text">Nome:&nbsp; </label>
+        <label class="label text" [innerHTML]="friendList.friend.name"></label>
+
+        <br>
+
+        <label class="label text">Cidade:&nbsp; </label>
+        <label class="label text" [innerHTML]="friendList.friend.cityName"></label>
+
+        <br>
+
+        <label class="label text">Latitude:&nbsp; </label>
+        <label class="label text" [innerHTML]="friendList.friend.lat"></label>
+
+        <br>
+
+        <label class="label text">Longitude:&nbsp; </label>
+        <label class="label text" [innerHTML]="friendList.friend.lon"></label>
+
+        <br>
+        <hr>
+        <label class="label text">Amigos Próximos:&nbsp; </label>
+        <table class="table">
+          <thead>
+            <th>Nome</th>
+            <th>Cidade</th>
+            <th>Distância</th>
+            <th>Distância Flat</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+          </thead>
+          <tbody *ngFor="let friend of friendList.friends">
+            <tr>
+              <td>
+                {{friend.name}}
+              </td>
+              <td>
+                {{friend.cityName}}
+              </td>
+
+              <td>
+                {{friend.distance}}
+              </td>
+
+              <td>
+                {{friend.distanceFlat}}
+              </td>
+
+              <td>
+                {{friend.lat}}
+              </td>
+
+              <td>
+                {{friend.lon}}
+              </td>
+
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col col-sm-6">
+
+        <agm-map [latitude]="friendList.friend.lat" [zoom]="zoom" [longitude]="friendList.friend.lon">
+
+          <agm-marker [latitude]="friendList.friend.lat" [longitude]="friendList.friend.lon"
+            [label]="friendList.friend.name" [iconUrl]="icon"> </agm-marker>
+
+          <agm-marker *ngFor="let friend of friendList.friends" [latitude]="friend.lat" [longitude]="friend.lon"
+            [label]="friend.name">
+
+          </agm-marker>
+        </agm-map>
+
+
+
+
+
+
+      </div>
+
+    </ng-template>
+
+
+  </div>
+
+
+
+
+
+
+</div>
+
+
+
+<router-outlet></router-outlet>
